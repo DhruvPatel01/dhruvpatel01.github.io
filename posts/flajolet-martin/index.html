@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>How to find number of unique elements in a stream? :: Dhruv Patel</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="So, I&amp;rsquo;ve been reading about streaming algorithms. Seems like the journey to streaming algorithms(aka Algorithms for Big Data) starts with Flajolet-Martin algorithm.
+The Problem We are given a sequence &amp;lt;u_0, u_1, u_2, u_3, ... , u_n&amp;gt; of n elements. Each u_i comes from the fixed set U of some finite size. We want to see how many elements are unique.
+A simple Python code like below can solve the problem, if we have required memory." />
+<meta name="keywords" content="streaming algorithms, randomized algorithms, big data" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://DhruvPatel01.github.io/posts/flajolet-martin/" />
+
+
+
+
+<link rel="stylesheet" href="https://DhruvPatel01.github.io/assets/style.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="https://DhruvPatel01.github.io/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="https://DhruvPatel01.github.io/img/favicon/orange.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="How to find number of unique elements in a stream?">
+<meta property="og:description" content="So, I&amp;rsquo;ve been reading about streaming algorithms. Seems like the journey to streaming algorithms(aka Algorithms for Big Data) starts with Flajolet-Martin algorithm.
+The Problem We are given a sequence &amp;lt;u_0, u_1, u_2, u_3, ... , u_n&amp;gt; of n elements. Each u_i comes from the fixed set U of some finite size. We want to see how many elements are unique.
+A simple Python code like below can solve the problem, if we have required memory." />
+<meta property="og:url" content="https://DhruvPatel01.github.io/posts/flajolet-martin/" />
+<meta property="og:site_name" content="Dhruv Patel" />
+
+  <meta property="og:image" content="https://DhruvPatel01.github.io">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2021-03-29 14:36:16 &#43;0530 IST" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="orange">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Dhruv Patel
+  </div>
+</a>
+
+    </div>
+    
+      <div class="menu-trigger">menu</div>
+    
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+        
+          <li><a href="https://github.com/DhruvPatel01/">Github</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about">About</a></li>
+      
+    
+      
+        <li><a href="https://github.com/DhruvPatel01/">Github</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://DhruvPatel01.github.io/posts/flajolet-martin/">How to find number of unique elements in a stream?</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2021-03-29 
+      </span>
+    
+    
+    <span class="post-author">:: Dhruv Patel</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="https://DhruvPatel01.github.io/tags/python/">python</a>&nbsp;
+    
+    #<a href="https://DhruvPatel01.github.io/tags/big-data/">big data</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <p>So, I&rsquo;ve been reading about streaming algorithms. Seems like the journey to streaming algorithms(aka Algorithms for Big Data) starts with Flajolet-Martin algorithm.</p>
+<h2 id="the-problem">The Problem<a href="#the-problem" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>We are given a sequence <code>&lt;u_0, u_1, u_2, u_3, ... , u_n&gt;</code> of <code>n</code> elements. Each <code>u_i</code> comes from the fixed set <code>U</code> of some finite size. We want to see how many elements are unique.</p>
+<p>A simple Python code like below can solve the problem, if we have required memory.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">card</span>(seq):
+    <span style="color:#66d9ef">return</span> len(set(seq))
+</code></pre></div><p>But we might not have a required memory. Hence we need to make a tradeoff. Use little memory and get an approximate answer or use <code>O(|U|)</code> memory, and get the accurate answer. We will go with small memory.</p>
+<h2 id="flajolet-martin-algorithm-a-hand-wavy-explanation">Flajolet-Martin Algorithm (a hand wavy explanation)<a href="#flajolet-martin-algorithm-a-hand-wavy-explanation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>The idea behind FM algorithm is that, each element generates an event. Same element has same event associated with it. So if <code>x_2 == x</code> generates <code>blahblah</code>, and <code>x_100 == x</code>, <code>blahblah</code> will be generated. Summary is that, you look for an event that is rare. Now if the events are generated from uniform distribution, as we see more and more &ldquo;rare&rdquo; events, we can be confident that we have seen &ldquo;more&rdquo; unique elements.</p>
+<p>Let me give an example. Say our event is number of trailing zeros of the hash of incoming element. So if hash is <code>101010</code>, the trail length is 1. On average how many different hashes would you have to see to see a trail length of 1? It&rsquo;s a coin toss, on average you would have to toss a coin twice to get Heads. What if we wanted 5 heads and 1 tail? You would have to toss a coin 64 times to see that event.</p>
+<p>Wikipedia, Chapter-4 of Mining Massive Datasets, an original paper, and numerous other blogs describe this algorithm, so I won&rsquo;t. I tried to implement this algorithm using trail length as en event, but even with using 1000 hash functions I wasn&rsquo;t able to get reasonably close answer. So I will describe and implement, what I believe is a better version of the same algorithm.</p>
+<p>Instead of trailing length, let our event generator be a function <code>f: U -&gt; [0, 1]</code>. If function was chosen randomly from a family of eligible functions, we could expect that for any fixed stream, <code>&lt;f(x_1), f(x_2), ...&gt;</code> would be uniformly random between 0 and 1. Now our definition of &ldquo;rarity&rdquo; is the smallest of <code>f(x_i)</code>s. In a stream of 1000 elements, the smallest element you saw was 0.7?, I don&rsquo;t think there are that many elements. Even if there were 2 unique elements, we should have seen number <code>&lt; 0.5</code> with 0.75 probability. On the other hand, in a stream of 1000 elements, the smallest element you saw was 0.01?, looks like there are many unique elements.</p>
+<p>What exactly is many? Well as per this algorithm, on average, if smallest number was <code>s</code>, there were <code>1/s - 1</code> unique elements in the stream. To answer why exactly this number, you might want to read <a href="https://www.sketchingbigdata.org/fall20/lec/notes.pdf">these lecture notes.</a> Now this is not an exact answer, but with high probability it is close to the correct answer. If we want to be more certain, compute the number using different randomly picked function then compute the average. Using Law of Large numbers, as more and more experiments we do, the average gets closer and closer to the correct answer.</p>
+<h2 id="implementation">Implementation<a href="#implementation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h3 id="ingredients">Ingredients<a href="#ingredients" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h3>
+<ol>
+<li>A stream, (you know, to test the implementation.)</li>
+<li>Around say thousand, randomly picked functions of the form <code>U -&gt; [0, 1]</code></li>
+</ol>
+<p>For the stream, I will use <a href="https://en.wikipedia.org/wiki/War_and_Peace">Leo Tolstoy&rsquo;s War and Peace</a>. You can download one from <a href="https://www.gutenberg.org/files/2600/2600-0.txt">Project Gutenberg</a>. I will use <a href="https://spacy.io/">spaCy</a> to preprocess the text.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> spacy.lang.en <span style="color:#f92672">import</span> English
+
+<span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;./data/war_and_peace.txt&#39;</span>) <span style="color:#66d9ef">as</span> f:
+    data <span style="color:#f92672">=</span> f<span style="color:#f92672">.</span>read()
+nlp <span style="color:#f92672">=</span> English(max_length<span style="color:#f92672">=</span>len(data))
+doc <span style="color:#f92672">=</span> nlp(data)
+
+stream <span style="color:#f92672">=</span> [token<span style="color:#f92672">.</span>lower_ <span style="color:#66d9ef">for</span> token <span style="color:#f92672">in</span> doc 
+          <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> (token<span style="color:#f92672">.</span>is_punct <span style="color:#f92672">or</span> token<span style="color:#f92672">.</span>is_space)]
+
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39; &#39;</span><span style="color:#f92672">.</span>join(stream[<span style="color:#ae81ff">1000</span>:<span style="color:#ae81ff">1010</span>]))
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">speaker was the well known anna pávlovna schérer maid of
+</code></pre></div><p>To pick a function, first I generate 64 random bits, and then xor them with <code>hash(token)</code> which is also 64 bit long on modern machines. First I will write a function that can generate many such &ldquo;functions&rdquo; in a batch.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> random
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">initialise_hash_fn</span>(n, seed<span style="color:#f92672">=</span><span style="color:#ae81ff">42</span>):
+    masks <span style="color:#f92672">=</span> []
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(n):
+        random<span style="color:#f92672">.</span>seed(seed<span style="color:#f92672">+</span>i)
+        masks<span style="color:#f92672">.</span>append(random<span style="color:#f92672">.</span>getrandbits(<span style="color:#ae81ff">64</span>))
+    <span style="color:#66d9ef">return</span> masks
+
+masks <span style="color:#f92672">=</span> initialise_hash_fn(<span style="color:#ae81ff">1000</span>)
+</code></pre></div><p>But xor gives me a number between 0 and 2^64-1, I need between 0 and 1. So will have to divide the resultant hash by 2^64-1.</p>
+<p>Finally, I process the stream. I&rsquo;ve thousand masks for thousand random functions.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_estimates</span>(masks, stream):
+    masks <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array(masks, dtype<span style="color:#f92672">=</span>np<span style="color:#f92672">.</span>uint64)
+    stream <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([hash(t) <span style="color:#66d9ef">for</span> t <span style="color:#f92672">in</span> stream], dtype<span style="color:#f92672">=</span>np<span style="color:#f92672">.</span>uint64)
+    mx <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>iinfo(np<span style="color:#f92672">.</span>uint64)<span style="color:#f92672">.</span>max
+    mn <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>ones(len(masks))
+
+    <span style="color:#66d9ef">for</span> element <span style="color:#f92672">in</span> stream:
+        s <span style="color:#f92672">=</span> (masks <span style="color:#f92672">^</span> element)<span style="color:#f92672">/</span>mx
+        mn <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>where(mn <span style="color:#f92672">&lt;</span> s, mn, s)
+    <span style="color:#66d9ef">return</span> mn
+
+estimates_raw <span style="color:#f92672">=</span> get_estimates(masks, stream)
+estimate_raw <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>mean(estimates_raw)
+<span style="color:#66d9ef">print</span>(<span style="color:#ae81ff">1</span><span style="color:#f92672">/</span>estimate_raw <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>, len(set(stream)))
+<span style="color:#75715e"># prints, 18117.553711596098 17982</span>
+</code></pre></div><p>So actual answer is 17,982 and estimated answer is 18,117. Error of around 150, not bad!</p>
+<p>We can also see the effect of using more and more random functions below.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">cumsum <span style="color:#f92672">=</span> estimates_raw<span style="color:#f92672">.</span>cumsum()
+z <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>arange(len(cumsum)) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+
+estimates <span style="color:#f92672">=</span> cumsum<span style="color:#f92672">/</span>z
+estimates <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">/</span>estimates <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>
+
+plt<span style="color:#f92672">.</span>plot(z, estimates)
+plt<span style="color:#f92672">.</span>axhline(true_n_uniq, c<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;r&#39;</span>)
+</code></pre></div><p><img src="images/cumulative_effects.png" alt="plot"></p>
+
+      </div></div>
+
+  
+  
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>Dhruv Patel</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://DhruvPatel01.github.io/assets/main.js"></script>
+<script src="https://DhruvPatel01.github.io/assets/prism.js"></script>
+
+
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

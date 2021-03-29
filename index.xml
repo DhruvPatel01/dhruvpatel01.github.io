@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Dhruv Patel</title>
+    <link>https://DhruvPatel01.github.io/</link>
+    <description>Recent content on Dhruv Patel</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Dhruv Patel</copyright>
+    <lastBuildDate>Mon, 29 Mar 2021 14:36:16 +0530</lastBuildDate><atom:link href="https://DhruvPatel01.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>How to find number of unique elements in a stream?</title>
+      <link>https://DhruvPatel01.github.io/posts/flajolet-martin/</link>
+      <pubDate>Mon, 29 Mar 2021 14:36:16 +0530</pubDate>
+      
+      <guid>https://DhruvPatel01.github.io/posts/flajolet-martin/</guid>
+      <description>So, I&amp;rsquo;ve been reading about streaming algorithms. Seems like the journey to streaming algorithms(aka Algorithms for Big Data) starts with Flajolet-Martin algorithm.
+The Problem We are given a sequence &amp;lt;u_0, u_1, u_2, u_3, ... , u_n&amp;gt; of n elements. Each u_i comes from the fixed set U of some finite size. We want to see how many elements are unique.
+A simple Python code like below can solve the problem, if we have required memory.</description>
+      <content>&lt;p&gt;So, I&amp;rsquo;ve been reading about streaming algorithms. Seems like the journey to streaming algorithms(aka Algorithms for Big Data) starts with Flajolet-Martin algorithm.&lt;/p&gt;
+&lt;h2 id=&#34;the-problem&#34;&gt;The Problem&lt;/h2&gt;
+&lt;p&gt;We are given a sequence &lt;code&gt;&amp;lt;u_0, u_1, u_2, u_3, ... , u_n&amp;gt;&lt;/code&gt; of &lt;code&gt;n&lt;/code&gt; elements. Each &lt;code&gt;u_i&lt;/code&gt; comes from the fixed set &lt;code&gt;U&lt;/code&gt; of some finite size. We want to see how many elements are unique.&lt;/p&gt;
+&lt;p&gt;A simple Python code like below can solve the problem, if we have required memory.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;card&lt;/span&gt;(seq):
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; len(set(seq))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;But we might not have a required memory. Hence we need to make a tradeoff. Use little memory and get an approximate answer or use &lt;code&gt;O(|U|)&lt;/code&gt; memory, and get the accurate answer. We will go with small memory.&lt;/p&gt;
+&lt;h2 id=&#34;flajolet-martin-algorithm-a-hand-wavy-explanation&#34;&gt;Flajolet-Martin Algorithm (a hand wavy explanation)&lt;/h2&gt;
+&lt;p&gt;The idea behind FM algorithm is that, each element generates an event. Same element has same event associated with it. So if &lt;code&gt;x_2 == x&lt;/code&gt; generates &lt;code&gt;blahblah&lt;/code&gt;, and &lt;code&gt;x_100 == x&lt;/code&gt;, &lt;code&gt;blahblah&lt;/code&gt; will be generated. Summary is that, you look for an event that is rare. Now if the events are generated from uniform distribution, as we see more and more &amp;ldquo;rare&amp;rdquo; events, we can be confident that we have seen &amp;ldquo;more&amp;rdquo; unique elements.&lt;/p&gt;
+&lt;p&gt;Let me give an example. Say our event is number of trailing zeros of the hash of incoming element. So if hash is &lt;code&gt;101010&lt;/code&gt;, the trail length is 1. On average how many different hashes would you have to see to see a trail length of 1? It&amp;rsquo;s a coin toss, on average you would have to toss a coin twice to get Heads. What if we wanted 5 heads and 1 tail? You would have to toss a coin 64 times to see that event.&lt;/p&gt;
+&lt;p&gt;Wikipedia, Chapter-4 of Mining Massive Datasets, an original paper, and numerous other blogs describe this algorithm, so I won&amp;rsquo;t. I tried to implement this algorithm using trail length as en event, but even with using 1000 hash functions I wasn&amp;rsquo;t able to get reasonably close answer. So I will describe and implement, what I believe is a better version of the same algorithm.&lt;/p&gt;
+&lt;p&gt;Instead of trailing length, let our event generator be a function &lt;code&gt;f: U -&amp;gt; [0, 1]&lt;/code&gt;. If function was chosen randomly from a family of eligible functions, we could expect that for any fixed stream, &lt;code&gt;&amp;lt;f(x_1), f(x_2), ...&amp;gt;&lt;/code&gt; would be uniformly random between 0 and 1. Now our definition of &amp;ldquo;rarity&amp;rdquo; is the smallest of &lt;code&gt;f(x_i)&lt;/code&gt;s. In a stream of 1000 elements, the smallest element you saw was 0.7?, I don&amp;rsquo;t think there are that many elements. Even if there were 2 unique elements, we should have seen number &lt;code&gt;&amp;lt; 0.5&lt;/code&gt; with 0.75 probability. On the other hand, in a stream of 1000 elements, the smallest element you saw was 0.01?, looks like there are many unique elements.&lt;/p&gt;
+&lt;p&gt;What exactly is many? Well as per this algorithm, on average, if smallest number was &lt;code&gt;s&lt;/code&gt;, there were &lt;code&gt;1/s - 1&lt;/code&gt; unique elements in the stream. To answer why exactly this number, you might want to read &lt;a href=&#34;https://www.sketchingbigdata.org/fall20/lec/notes.pdf&#34;&gt;these lecture notes.&lt;/a&gt; Now this is not an exact answer, but with high probability it is close to the correct answer. If we want to be more certain, compute the number using different randomly picked function then compute the average. Using Law of Large numbers, as more and more experiments we do, the average gets closer and closer to the correct answer.&lt;/p&gt;
+&lt;h2 id=&#34;implementation&#34;&gt;Implementation&lt;/h2&gt;
+&lt;h3 id=&#34;ingredients&#34;&gt;Ingredients&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;A stream, (you know, to test the implementation.)&lt;/li&gt;
+&lt;li&gt;Around say thousand, randomly picked functions of the form &lt;code&gt;U -&amp;gt; [0, 1]&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;For the stream, I will use &lt;a href=&#34;https://en.wikipedia.org/wiki/War_and_Peace&#34;&gt;Leo Tolstoy&amp;rsquo;s War and Peace&lt;/a&gt;. You can download one from &lt;a href=&#34;https://www.gutenberg.org/files/2600/2600-0.txt&#34;&gt;Project Gutenberg&lt;/a&gt;. I will use &lt;a href=&#34;https://spacy.io/&#34;&gt;spaCy&lt;/a&gt; to preprocess the text.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; spacy.lang.en &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; English
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;with&lt;/span&gt; open(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;./data/war_and_peace.txt&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; f:
+    data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; f&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;read()
+nlp &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; English(max_length&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;len(data))
+doc &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; nlp(data)
+
+stream &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [token&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;lower_ &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; token &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; doc 
+          &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;not&lt;/span&gt; (token&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;is_punct &lt;span style=&#34;color:#f92672&#34;&gt;or&lt;/span&gt; token&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;is_space)]
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39; &amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;join(stream[&lt;span style=&#34;color:#ae81ff&#34;&gt;1000&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;1010&lt;/span&gt;]))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;speaker was the well known anna pávlovna schérer maid of
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;To pick a function, first I generate 64 random bits, and then xor them with &lt;code&gt;hash(token)&lt;/code&gt; which is also 64 bit long on modern machines. First I will write a function that can generate many such &amp;ldquo;functions&amp;rdquo; in a batch.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; random
+
+&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;initialise_hash_fn&lt;/span&gt;(n, seed&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;42&lt;/span&gt;):
+    masks &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(n):
+        random&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;seed(seed&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;i)
+        masks&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(random&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;getrandbits(&lt;span style=&#34;color:#ae81ff&#34;&gt;64&lt;/span&gt;))
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; masks
+
+masks &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; initialise_hash_fn(&lt;span style=&#34;color:#ae81ff&#34;&gt;1000&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;But xor gives me a number between 0 and 2^64-1, I need between 0 and 1. So will have to divide the resultant hash by 2^64-1.&lt;/p&gt;
+&lt;p&gt;Finally, I process the stream. I&amp;rsquo;ve thousand masks for thousand random functions.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_estimates&lt;/span&gt;(masks, stream):
+    masks &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;array(masks, dtype&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;uint64)
+    stream &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;array([hash(t) &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; t &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; stream], dtype&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;uint64)
+    mx &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;iinfo(np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;uint64)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;max
+    mn &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;ones(len(masks))
+
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; element &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; stream:
+        s &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (masks &lt;span style=&#34;color:#f92672&#34;&gt;^&lt;/span&gt; element)&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;mx
+        mn &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;where(mn &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; s, mn, s)
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; mn
+
+estimates_raw &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; get_estimates(masks, stream)
+estimate_raw &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mean(estimates_raw)
+&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;estimate_raw &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, len(set(stream)))
+&lt;span style=&#34;color:#75715e&#34;&gt;# prints, 18117.553711596098 17982&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;So actual answer is 17,982 and estimated answer is 18,117. Error of around 150, not bad!&lt;/p&gt;
+&lt;p&gt;We can also see the effect of using more and more random functions below.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;cumsum &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; estimates_raw&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;cumsum()
+z &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;arange(len(cumsum)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+
+estimates &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; cumsum&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;z
+estimates &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;estimates &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+
+plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;plot(z, estimates)
+plt&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;axhline(true_n_uniq, c&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;r&amp;#39;&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;images/cumulative_effects.png&#34; alt=&#34;plot&#34;&gt;&lt;/p&gt;
+</content>
+    </item>
+    
+  </channel>
+</rss>
