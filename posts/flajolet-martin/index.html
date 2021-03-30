@@ -87,11 +87,15 @@ A simple Python code like below can solve the problem, if we have required memor
     
       
         
-          <li><a href="/about">About</a></li>
+          <li><a href="/about/">About</a></li>
         
       
         
           <li><a href="https://github.com/DhruvPatel01/">Github</a></li>
+        
+      
+        
+          <li><a href="/talks/">Talks</a></li>
         
       
       
@@ -103,11 +107,15 @@ A simple Python code like below can solve the problem, if we have required memor
   <ul class="menu__inner menu__inner--mobile">
     
       
-        <li><a href="/about">About</a></li>
+        <li><a href="/about/">About</a></li>
       
     
       
         <li><a href="https://github.com/DhruvPatel01/">Github</a></li>
+      
+    
+      
+        <li><a href="/talks/">Talks</a></li>
       
     
     
@@ -156,10 +164,10 @@ A simple Python code like below can solve the problem, if we have required memor
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">card</span>(seq):
     <span style="color:#66d9ef">return</span> len(set(seq))
 </code></pre></div><p>But we might not have a required memory. Hence we need to make a tradeoff. Use little memory and get an approximate answer or use <code>O(|U|)</code> memory, and get the accurate answer. We will go with small memory.</p>
-<h2 id="flajolet-martin-algorithm-a-hand-wavy-explanation">Flajolet-Martin Algorithm (a hand wavy explanation)<a href="#flajolet-martin-algorithm-a-hand-wavy-explanation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<h2 id="flajolet-martin-algorithm-a-handwavy-explanation">Flajolet-Martin Algorithm (a handwavy explanation)<a href="#flajolet-martin-algorithm-a-handwavy-explanation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
 <p>The idea behind FM algorithm is that, each element generates an event. Same element has same event associated with it. So if <code>x_2 == x</code> generates <code>blahblah</code>, and <code>x_100 == x</code>, <code>blahblah</code> will be generated. Summary is that, you look for an event that is rare. Now if the events are generated from uniform distribution, as we see more and more &ldquo;rare&rdquo; events, we can be confident that we have seen &ldquo;more&rdquo; unique elements.</p>
 <p>Let me give an example. Say our event is number of trailing zeros of the hash of incoming element. So if hash is <code>101010</code>, the trail length is 1. On average how many different hashes would you have to see to see a trail length of 1? It&rsquo;s a coin toss, on average you would have to toss a coin twice to get Heads. What if we wanted 5 heads and 1 tail? You would have to toss a coin 64 times to see that event.</p>
-<p>Wikipedia, Chapter-4 of Mining Massive Datasets, an original paper, and numerous other blogs describe this algorithm, so I won&rsquo;t. I tried to implement this algorithm using trail length as en event, but even with using 1000 hash functions I wasn&rsquo;t able to get reasonably close answer. So I will describe and implement, what I believe is a better version of the same algorithm.</p>
+<p>Wikipedia, Chapter-4 of Mining Massive Datasets, an original paper, and numerous other blogs describe this algorithm, so I won&rsquo;t. I tried to implement this algorithm using trail length as an event, but even with using 1000 hash functions I wasn&rsquo;t able to get reasonably close answer. So I will describe and implement, what I believe is a better version of the same algorithm.</p>
 <p>Instead of trailing length, let our event generator be a function <code>f: U -&gt; [0, 1]</code>. If function was chosen randomly from a family of eligible functions, we could expect that for any fixed stream, <code>&lt;f(x_1), f(x_2), ...&gt;</code> would be uniformly random between 0 and 1. Now our definition of &ldquo;rarity&rdquo; is the smallest of <code>f(x_i)</code>s. In a stream of 1000 elements, the smallest element you saw was 0.7?, I don&rsquo;t think there are that many elements. Even if there were 2 unique elements, we should have seen number <code>&lt; 0.5</code> with 0.75 probability. On the other hand, in a stream of 1000 elements, the smallest element you saw was 0.01?, looks like there are many unique elements.</p>
 <p>What exactly is many? Well as per this algorithm, on average, if smallest number was <code>s</code>, there were <code>1/s - 1</code> unique elements in the stream. To answer why exactly this number, you might want to read <a href="https://www.sketchingbigdata.org/fall20/lec/notes.pdf">these lecture notes.</a> Now this is not an exact answer, but with high probability it is close to the correct answer. If we want to be more certain, compute the number using different randomly picked function then compute the average. Using Law of Large numbers, as more and more experiments we do, the average gets closer and closer to the correct answer.</p>
 <h2 id="implementation">Implementation<a href="#implementation" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
@@ -251,7 +259,8 @@ plt<span style="color:#f92672">.</span>axhline(true_n_uniq, c<span style="color:
 
 
 
-
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 
   
