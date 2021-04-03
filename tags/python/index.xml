@@ -7,34 +7,95 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Dhruv Patel</copyright>
-    <lastBuildDate>Mon, 29 Mar 2021 14:36:16 +0530</lastBuildDate><atom:link href="https://DhruvPatel01.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 03 Apr 2021 18:04:02 +0530</lastBuildDate><atom:link href="https://DhruvPatel01.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>How to find number of unique elements in a stream?</title>
+      <title>AeroCalc Part 1: What is AeroCalc and how to use it?</title>
+      <link>https://DhruvPatel01.github.io/posts/aerocalc/aerocalc_part1/</link>
+      <pubDate>Sat, 03 Apr 2021 18:04:02 +0530</pubDate>
+      
+      <guid>https://DhruvPatel01.github.io/posts/aerocalc/aerocalc_part1/</guid>
+      <description>I am a Computer Engineer by education and by training. Luckily, we computer engineers do not have to deal with different units. All our units are power of 2. We have sensible names, Kilo, Mega, Giga, you get it. When we get unlucky, there could be a confusion of whether Kilo in the context is $ 2^{10} $ or $ 10^3 $. But that is it.
+But in other engineering (and science) branches this is not the case.</description>
+      <content>&lt;p&gt;I am a Computer Engineer by education and by training. Luckily, we computer engineers do not have to deal with different units. All our units are power of 2. We have sensible names, Kilo, Mega, Giga, you get it. When we get unlucky, there could be a confusion of whether Kilo in the context is $ 2^{10} $ or $ 10^3 $. But that is it.&lt;/p&gt;
+&lt;p&gt;But in other engineering (and science) branches this is not the case. A while ago I was taking a course &amp;ldquo;Introduction Aeronautical Engineering&amp;rdquo; on edX (the course is from TUDelft). Honestly, the homework problems there were annoying, at least for me. I can understand that students in the Aero department might need to practice the conversion process.&lt;/p&gt;
+&lt;p&gt;There is a &lt;code&gt;Newton&lt;/code&gt;, which is also $\frac{kg * m}{s^2}$. There is an imperial unit for length called &lt;code&gt;foot&lt;/code&gt;, but you &lt;strong&gt;have to&lt;/strong&gt; convert that into SI units to be compatible with other units in the formula, because the constants in the formula use &lt;code&gt;m&lt;/code&gt;. Then there is &lt;code&gt;Celsius&lt;/code&gt; to &lt;code&gt;Kelvin&lt;/code&gt; mapping. You either have to memorize the conversion factors, or you have to make a long list of the conversion factors.&lt;/p&gt;
+&lt;p&gt;Something had to be done. And I was also looking for something to do on the weekends. So I am working on &lt;a href=&#34;https://github.com/DhruvPatel01/AeroCalc/&#34;&gt;AeroCalc&lt;/a&gt;. Don&amp;rsquo;t go on the name, I gave Aero prefix because my primary aim is to expedite solving homework problems in that course. But many parts of the app are general and should be usable outside Aerospace engineering.&lt;/p&gt;
+&lt;p&gt;Rather than explaining what AeroCalc does, let me show you it in action.&lt;/p&gt;
+&lt;script id=&#34;asciicast-sYPyE91MGr9QOamVwnYThzlZN&#34; src=&#34;https://asciinema.org/a/sYPyE91MGr9QOamVwnYThzlZN.js&#34; async&gt;&lt;/script&gt;
+&lt;p&gt;You might have noticed a few things. First there is a need for &lt;code&gt;*&lt;/code&gt; between quantity and its unit. I designed it this way because it simplifies the grammar. Another thing is that units are not pluralized, e.g. it is &lt;code&gt;32000 foot&lt;/code&gt; and not &lt;code&gt;32000 feet&lt;/code&gt;. If you need your answer in SI units just use &lt;code&gt;expression in si&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;In the backend I am using an amazing Python library called &lt;a href=&#34;https://www.astropy.org/&#34;&gt;Astropy&lt;/a&gt; for conversion and &lt;a href=&#34;https://github.com/dabeaz/ply&#34;&gt;Ply&lt;/a&gt; for parsing. You can use all the units available in Astropy, the list can be found &lt;a href=&#34;https://docs.astropy.org/en/stable/units/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;You can also use math constants like &lt;code&gt;pi&lt;/code&gt; and &lt;code&gt;e&lt;/code&gt;. Internally AeroCalc looks for unresolved names in &lt;code&gt;math&lt;/code&gt; library in Python. So if you haven&amp;rsquo;t created a &lt;code&gt;pi&lt;/code&gt; variable, &lt;code&gt;math.pi&lt;/code&gt; will be used.&lt;/p&gt;
+&lt;h2 id=&#34;commands-in-aerocalc&#34;&gt;Commands in AeroCalc&lt;/h2&gt;
+&lt;dl&gt;
+&lt;dt&gt;&lt;code&gt;del x&lt;/code&gt;&lt;/dt&gt;
+&lt;dd&gt;deletes the variable named &lt;code&gt;x&lt;/code&gt; if defined. If not defined ignores the command.&lt;/dd&gt;
+&lt;dt&gt;&lt;code&gt;variables&lt;/code&gt;&lt;/dt&gt;
+&lt;dd&gt;lists all the variables defined in the current session.&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;h2 id=&#34;problem-solving-with-aerocalc&#34;&gt;Problem Solving with AeroCalc&lt;/h2&gt;
+&lt;p&gt;Let&amp;rsquo;s try to solve one problem using AeroCalc. Below is one of the homework problems from the course.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;An aircraft flies at an altitude of 30,000 feet. 
+Determine the air temperature (in [K]), 
+air pressure (in [Pa]) and air density (in [kg/m3]) 
+at this altitude, according to the standard atmosphere.
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Following are the variables given.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;g = 9.80665 * m/s/s
+T0 = 15*Celsius in Kelvin
+P0 = 1013.25 * hectopascal
+h = 30000 * foot in m
+a = -6.5 * Kelvin/km
+rho0 = 1.225 * kg/m^3
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Notice that some variables are given in &lt;code&gt;m&lt;/code&gt; whereas others are in &lt;code&gt;km&lt;/code&gt;. A good thing about using AeroCalc is that generally you do not need to worry about this discrepancy. However you can always use &lt;code&gt;expr in si&lt;/code&gt; to have unified values.&lt;/p&gt;
+&lt;p&gt;Since 30,000 foot is in troposphere, we can use $ T_1 = T_0 + a*h $ formula to compute the temperature at 32000 foot.&lt;/p&gt;
+&lt;p&gt;Once we know the temperature, we can use the following formula to compute the air density.&lt;/p&gt;
+&lt;p&gt;$$
+\frac{\rho_0}{\rho_1} = {\left( \frac{T_1}{T_0} \right)} ^{\frac{g}{R * a} - 1}
+$$&lt;/p&gt;
+&lt;p&gt;There are few things about &lt;code&gt;^&lt;/code&gt; operator in AeroCalc that you should keep in mind.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;In &lt;code&gt;a^b&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt; has to be unit less. So expression like  &lt;code&gt;2^(3*m/(3*m))&lt;/code&gt; is allowed, but &lt;code&gt;2^(3*m/3*m)&lt;/code&gt; is not, as it simplifies to &lt;code&gt;2^(1*m^2)&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;By default the units are not simplified, you might have to use &lt;code&gt;a^(b in si)&lt;/code&gt; if units in b cancel out.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;2^((3*m)/(300*cm))&lt;/code&gt; will give you an error. Use &lt;code&gt;2^((3*m)/(300*cm) in si)&lt;/code&gt; for now. I might fix this later.&lt;/li&gt;
+&lt;li&gt;If &lt;code&gt;a&lt;/code&gt; has units, &lt;code&gt;b&lt;/code&gt; has to be like an integer. &lt;code&gt;b = 3.0&lt;/code&gt; is allowed, but &lt;code&gt;b = 3.14&lt;/code&gt; is not. So &lt;code&gt;(3*m)^2.0&lt;/code&gt; evaluates to &lt;code&gt;9*m^2&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Finally, if &lt;code&gt;a&lt;/code&gt; does not have units, any power is allowed.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In the above density formula, the exponent is actually unit less. So everything works out.&lt;/p&gt;
+&lt;p&gt;See the following recording for the whole solution.&lt;/p&gt;
+&lt;script id=&#34;asciicast-oTGxU3t8WOPyI6orh3W0TBMfh&#34; src=&#34;https://asciinema.org/a/oTGxU3t8WOPyI6orh3W0TBMfh.js&#34; async&gt;&lt;/script&gt;
+&lt;h2 id=&#34;what-is-next&#34;&gt;What is next?&lt;/h2&gt;
+&lt;p&gt;As far as blogging goes, I plan to write the details of how AeroCalc was implemented, the nitty gritty details of Lex and Yacc, in the next part. It is not that difficult really.&lt;/p&gt;
+&lt;p&gt;In the AeroCalc itself, I plan to add some features like having a database of formulas, and solving for a particular variables using other user defined variables.&lt;/p&gt;
+&lt;p&gt;GitHub repository for this project can be found &lt;a href=&#34;https://github.com/DhruvPatel01/AeroCalc/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</content>
+    </item>
+    
+    <item>
+      <title>How to find the number of unique elements in a stream?</title>
       <link>https://DhruvPatel01.github.io/posts/flajolet-martin/</link>
       <pubDate>Mon, 29 Mar 2021 14:36:16 +0530</pubDate>
       
       <guid>https://DhruvPatel01.github.io/posts/flajolet-martin/</guid>
-      <description>So, I&amp;rsquo;ve been reading about streaming algorithms. Seems like the journey to streaming algorithms(aka Algorithms for Big Data) starts with Flajolet-Martin algorithm.
+      <description>So, I&amp;rsquo;ve been reading about streaming algorithms. Seems like the journey to streaming algorithms(aka Algorithms for Big Data) starts with the Flajolet-Martin algorithm.
 The Problem We are given a sequence &amp;lt;u_0, u_1, u_2, u_3, ... , u_n&amp;gt; of n elements. Each u_i comes from the fixed set U of some finite size. We want to see how many elements are unique.
 A simple Python code like below can solve the problem, if we have required memory.</description>
-      <content>&lt;p&gt;So, I&amp;rsquo;ve been reading about streaming algorithms. Seems like the journey to streaming algorithms(aka Algorithms for Big Data) starts with Flajolet-Martin algorithm.&lt;/p&gt;
+      <content>&lt;p&gt;So, I&amp;rsquo;ve been reading about streaming algorithms. Seems like the journey to streaming algorithms(aka Algorithms for Big Data) starts with the Flajolet-Martin algorithm.&lt;/p&gt;
 &lt;h2 id=&#34;the-problem&#34;&gt;The Problem&lt;/h2&gt;
 &lt;p&gt;We are given a sequence &lt;code&gt;&amp;lt;u_0, u_1, u_2, u_3, ... , u_n&amp;gt;&lt;/code&gt; of &lt;code&gt;n&lt;/code&gt; elements. Each &lt;code&gt;u_i&lt;/code&gt; comes from the fixed set &lt;code&gt;U&lt;/code&gt; of some finite size. We want to see how many elements are unique.&lt;/p&gt;
 &lt;p&gt;A simple Python code like below can solve the problem, if we have required memory.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;card&lt;/span&gt;(seq):
     &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; len(set(seq))
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;But we might not have a required memory. Hence we need to make a tradeoff. Use little memory and get an approximate answer or use &lt;code&gt;O(|U|)&lt;/code&gt; memory, and get the accurate answer. We will go with small memory.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;But we might not have a required memory. Hence we need to make a tradeoff. Use little memory and get an approximate answer or use &lt;code&gt;O(|U|)&lt;/code&gt; memory, and get the accurate answer. We will go with a small memory.&lt;/p&gt;
 &lt;h2 id=&#34;flajolet-martin-algorithm-a-handwavy-explanation&#34;&gt;Flajolet-Martin Algorithm (a handwavy explanation)&lt;/h2&gt;
-&lt;p&gt;The idea behind FM algorithm is that, each element generates an event. Same element has same event associated with it. So if &lt;code&gt;x_2 == x&lt;/code&gt; generates &lt;code&gt;blahblah&lt;/code&gt;, and &lt;code&gt;x_100 == x&lt;/code&gt;, &lt;code&gt;blahblah&lt;/code&gt; will be generated. Summary is that, you look for an event that is rare. Now if the events are generated from uniform distribution, as we see more and more &amp;ldquo;rare&amp;rdquo; events, we can be confident that we have seen &amp;ldquo;more&amp;rdquo; unique elements.&lt;/p&gt;
-&lt;p&gt;Let me give an example. Say our event is number of trailing zeros of the hash of incoming element. So if hash is &lt;code&gt;101010&lt;/code&gt;, the trail length is 1. On average how many different hashes would you have to see to see a trail length of 1? It&amp;rsquo;s a coin toss, on average you would have to toss a coin twice to get Heads. What if we wanted 5 heads and 1 tail? You would have to toss a coin 64 times to see that event.&lt;/p&gt;
-&lt;p&gt;Wikipedia, Chapter-4 of Mining Massive Datasets, an original paper, and numerous other blogs describe this algorithm, so I won&amp;rsquo;t. I tried to implement this algorithm using trail length as an event, but even with using 1000 hash functions I wasn&amp;rsquo;t able to get reasonably close answer. So I will describe and implement, what I believe is a better version of the same algorithm.&lt;/p&gt;
-&lt;p&gt;Instead of trailing length, let our event generator be a function &lt;code&gt;f: U -&amp;gt; [0, 1]&lt;/code&gt;. If function was chosen randomly from a family of eligible functions, we could expect that for any fixed stream, &lt;code&gt;&amp;lt;f(x_1), f(x_2), ...&amp;gt;&lt;/code&gt; would be uniformly random between 0 and 1. Now our definition of &amp;ldquo;rarity&amp;rdquo; is the smallest of &lt;code&gt;f(x_i)&lt;/code&gt;s. In a stream of 1000 elements, the smallest element you saw was 0.7?, I don&amp;rsquo;t think there are that many elements. Even if there were 2 unique elements, we should have seen number &lt;code&gt;&amp;lt; 0.5&lt;/code&gt; with 0.75 probability. On the other hand, in a stream of 1000 elements, the smallest element you saw was 0.01?, looks like there are many unique elements.&lt;/p&gt;
-&lt;p&gt;What exactly is many? Well as per this algorithm, on average, if smallest number was &lt;code&gt;s&lt;/code&gt;, there were &lt;code&gt;1/s - 1&lt;/code&gt; unique elements in the stream. To answer why exactly this number, you might want to read &lt;a href=&#34;https://www.sketchingbigdata.org/fall20/lec/notes.pdf&#34;&gt;these lecture notes.&lt;/a&gt; Now this is not an exact answer, but with high probability it is close to the correct answer. If we want to be more certain, compute the number using different randomly picked function then compute the average. Using Law of Large numbers, as more and more experiments we do, the average gets closer and closer to the correct answer.&lt;/p&gt;
+&lt;p&gt;The idea behind the FM algorithm is that each element generates an event. Same element has the same event associated with it. So if &lt;code&gt;x_2 == x&lt;/code&gt; generates &lt;code&gt;blahblah&lt;/code&gt;, and &lt;code&gt;x_100 == x&lt;/code&gt;, &lt;code&gt;blahblah&lt;/code&gt; will be generated. Summary is that you look for an event that is rare. Now if the events are generated from uniform distribution, as we see more and more &amp;ldquo;rare&amp;rdquo; events, we can be confident that we have seen &amp;ldquo;more&amp;rdquo; unique elements.&lt;/p&gt;
+&lt;p&gt;Let me give an example. Say our event is the number of trailing zeros of the hash of the incoming element. So if the hash is &lt;code&gt;101010&lt;/code&gt;, the trail length is 1. On average how many different hashes would you have to see to see a trail length of 1? It&amp;rsquo;s a coin toss, on average you would have to toss a coin twice to get Heads. What if we wanted 5 heads and 1 tail? You would have to toss a coin 64 times to see that event.&lt;/p&gt;
+&lt;p&gt;Wikipedia, Chapter-4 of Mining Massive Datasets, an original paper, and numerous other blogs describe this algorithm, so I won&amp;rsquo;t. I tried to implement this algorithm using the trail length as an event, but even with using 1000 hash functions I wasn&amp;rsquo;t able to get a reasonably close answer. So I will describe and implement what I believe is a better version of the same algorithm.&lt;/p&gt;
+&lt;p&gt;Instead of trailing length, let our event generator be a function &lt;code&gt;f: U -&amp;gt; [0, 1]&lt;/code&gt;. If a function was chosen randomly from a family of eligible functions, we could expect that for any fixed stream, &lt;code&gt;&amp;lt;f(x_1), f(x_2), ...&amp;gt;&lt;/code&gt; would be uniformly random between 0 and 1. Now our definition of &amp;ldquo;rarity&amp;rdquo; is the smallest of &lt;code&gt;f(x_i)&lt;/code&gt;s. In a stream of 1000 elements, the smallest element you saw was 0.7?, I don&amp;rsquo;t think there are that many elements. Even if there were 2 unique elements, we should have seen the numbers &lt;code&gt;&amp;lt; 0.5&lt;/code&gt; with 0.75 probability. On the other hand, in a stream of 1000 elements, the smallest element you saw was 0.01?, looks like there are many unique elements.&lt;/p&gt;
+&lt;p&gt;What exactly is many? Well as per this algorithm, on average, if the smallest number was &lt;code&gt;s&lt;/code&gt;, there were &lt;code&gt;1/s - 1&lt;/code&gt; unique elements in the stream. To answer why exactly this number, you might want to read &lt;a href=&#34;https://www.sketchingbigdata.org/fall20/lec/notes.pdf&#34;&gt;these lecture notes.&lt;/a&gt; Now this is not an exact answer, but with high probability it is close to the correct answer. If we want to be more certain, compute the number using different randomly picked functions then compute the average. Using the Law of Large numbers, as more and more experiments we do, the average gets closer and closer to the correct answer.&lt;/p&gt;
 &lt;h2 id=&#34;implementation&#34;&gt;Implementation&lt;/h2&gt;
 &lt;h3 id=&#34;ingredients&#34;&gt;Ingredients&lt;/h3&gt;
 &lt;ol&gt;
 &lt;li&gt;A stream, (you know, to test the implementation.)&lt;/li&gt;
-&lt;li&gt;Around say thousand, randomly picked functions of the form &lt;code&gt;U -&amp;gt; [0, 1]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Around say a thousand, randomly picked functions of the form &lt;code&gt;U -&amp;gt; [0, 1]&lt;/code&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;For the stream, I will use &lt;a href=&#34;https://en.wikipedia.org/wiki/War_and_Peace&#34;&gt;Leo Tolstoy&amp;rsquo;s War and Peace&lt;/a&gt;. You can download one from &lt;a href=&#34;https://www.gutenberg.org/files/2600/2600-0.txt&#34;&gt;Project Gutenberg&lt;/a&gt;. I will use &lt;a href=&#34;https://spacy.io/&#34;&gt;spaCy&lt;/a&gt; to preprocess the text.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; spacy.lang.en &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; English
@@ -61,7 +122,7 @@ stream &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [token&lt;span s
 
 masks &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; initialise_hash_fn(&lt;span style=&#34;color:#ae81ff&#34;&gt;1000&lt;/span&gt;)
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;But xor gives me a number between 0 and 2^64-1, I need between 0 and 1. So will have to divide the resultant hash by 2^64-1.&lt;/p&gt;
-&lt;p&gt;Finally, I process the stream. I&amp;rsquo;ve thousand masks for thousand random functions.&lt;/p&gt;
+&lt;p&gt;Finally, I process the stream. I&amp;rsquo;ve a thousand masks for thousand random functions.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_estimates&lt;/span&gt;(masks, stream):
     masks &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;array(masks, dtype&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;uint64)
     stream &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;array([hash(t) &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; t &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; stream], dtype&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;uint64)
@@ -77,7 +138,7 @@ estimates_raw &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; get_estim
 estimate_raw &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mean(estimates_raw)
 &lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;estimate_raw &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;, len(set(stream)))
 &lt;span style=&#34;color:#75715e&#34;&gt;# prints, 18117.553711596098 17982&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;So actual answer is 17,982 and estimated answer is 18,117. Error of around 150, not bad!&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;So the actual answer is 17,982 and the estimated answer is 18,117. Error of around 150, not bad!&lt;/p&gt;
 &lt;p&gt;We can also see the effect of using more and more random functions below.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;cumsum &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; estimates_raw&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;cumsum()
 z &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;arange(len(cumsum)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;

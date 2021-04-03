@@ -6,8 +6,8 @@
   
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Monte Carlo Markov Chains and PyMC3 The talks given at Myntra starts with an introduction to Bayesian Linear Regression. I explain analytic solution and also introduce PyMC3 based solution. Then I proceed to explain Markov Chains that were used by PyMC internally. In the process Metropolis-Hastings and Gibbs chain were explained. The notebook is available here. For proofs there is supplementary pdf.
-On Double precision floating points In this talk, I introduced subtleties of using floating points to the audience." />
+<meta name="description" content="Monte Carlo Markov Chains and PyMC3 The talk given at Myntra starts with an introduction to the Bayesian Linear Regression. I explain analytic solution and also introduce PyMC3 based solution. Then I proceed to explain Markov Chains that were used by PyMC internally. In the process Metropolis-Hastings and Gibbs chain are explained. The notebook is available here. For proofs there is a supplementary pdf.
+On Double Precision Floating Points In this talk, I introduced subtleties of using floating points to the audience." />
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <link rel="canonical" href="https://DhruvPatel01.github.io/talks/" />
@@ -35,8 +35,8 @@ On Double precision floating points In this talk, I introduced subtleties of usi
 <meta property="og:locale" content="en" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="Talks I have given">
-<meta property="og:description" content="Monte Carlo Markov Chains and PyMC3 The talks given at Myntra starts with an introduction to Bayesian Linear Regression. I explain analytic solution and also introduce PyMC3 based solution. Then I proceed to explain Markov Chains that were used by PyMC internally. In the process Metropolis-Hastings and Gibbs chain were explained. The notebook is available here. For proofs there is supplementary pdf.
-On Double precision floating points In this talk, I introduced subtleties of using floating points to the audience." />
+<meta property="og:description" content="Monte Carlo Markov Chains and PyMC3 The talk given at Myntra starts with an introduction to the Bayesian Linear Regression. I explain analytic solution and also introduce PyMC3 based solution. Then I proceed to explain Markov Chains that were used by PyMC internally. In the process Metropolis-Hastings and Gibbs chain are explained. The notebook is available here. For proofs there is a supplementary pdf.
+On Double Precision Floating Points In this talk, I introduced subtleties of using floating points to the audience." />
 <meta property="og:url" content="https://DhruvPatel01.github.io/talks/" />
 <meta property="og:site_name" content="Dhruv Patel" />
 
@@ -142,9 +142,9 @@ On Double precision floating points In this talk, I introduced subtleties of usi
 
   <div class="post-content"><div>
         <h2 id="monte-carlo-markov-chains-and-pymc3">Monte Carlo Markov Chains and PyMC3<a href="#monte-carlo-markov-chains-and-pymc3" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
-<p>The talks given at Myntra starts with an introduction to Bayesian Linear Regression. I explain analytic solution and also introduce PyMC3 based solution. Then I proceed to explain Markov Chains that were used by PyMC internally. In the process Metropolis-Hastings and Gibbs chain were explained. The notebook is available <a href="https://github.com/DhruvPatel01/myntra_talks/blob/master/bayesian_intro_with_pymc.ipynb">here</a>. For proofs there is <a href="https://github.com/DhruvPatel01/myntra_talks/blob/master/mcmc.pdf">supplementary pdf</a>.</p>
-<h2 id="on-double-precision-floating-points">On Double precision floating points<a href="#on-double-precision-floating-points" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
-<p>In this talk, I introduced subtleties of using floating points to the audience. Talk starts with classic mistake done in Patriot Missile system, which caused life of 28 soldiers. Then I introduce naive/intuitive algorithm of computing variance online (in one pass), and dangers of it. While explaining what caused the issues in naive algorithm, I explain how different programming languages might give different results while working with floats. I then explain the Achilles' heel of floating point calculation called catastrophic calculation, and how to avoid it. Talks concludes with Welford&rsquo;s algorithm on computing variance online. Slides are available <a href="/slides/floats.slides.html">here</a>.</p>
+<p>The talk given at Myntra starts with an introduction to the Bayesian Linear Regression. I explain analytic solution and also introduce PyMC3 based solution. Then I proceed to explain Markov Chains that were used by PyMC internally. In the process Metropolis-Hastings and Gibbs chain are explained. The notebook is available <a href="https://github.com/DhruvPatel01/myntra_talks/blob/master/bayesian_intro_with_pymc.ipynb">here</a>. For proofs there is a <a href="https://github.com/DhruvPatel01/myntra_talks/blob/master/mcmc.pdf">supplementary pdf</a>.</p>
+<h2 id="on-double-precision-floating-points">On Double Precision Floating Points<a href="#on-double-precision-floating-points" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>In this talk, I introduced subtleties of using floating points to the audience. Talk starts with a classic mistake done in the Patriot Missile system, which caused the lives of 28 soldiers. Then I introduce a naive/intuitive algorithm of computing variance online (i.e. in one pass) and dangers of it. While explaining what caused the issues in the naive algorithm, I explain how different programming languages might give different results while working with floats(doubles). I then explain the Achilles' heel of floating point arithmetic called catastrophic calculation, and how to avoid it. Talk concludes with Welford&rsquo;s algorithm on computing variance online. Slides are available <a href="/slides/floats.slides.html">here</a>.</p>
 
       </div></div>
 
@@ -174,6 +174,16 @@ On Double precision floating points In this talk, I introduced subtleties of usi
 
 
 
+<script>
+window.MathJax = {
+    tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+    },
+    svg: {
+        fontCache: 'global'
+    }
+};
+</script>
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
