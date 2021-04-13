@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>NotAeroCalc Part 1: What is NotAeroCalc and how to use it? :: Dhruv Patel</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="I am a Computer Engineer by education and by training. Luckily, we computer engineers do not have to deal with different units. All our units are power of 2. We have sensible names, Kilo, Mega, Giga, you get it. When we get unlucky, there could be a confusion of whether Kilo in the context is $ 2^{10} $ or $ 10^3 $. But that is it.
+But in other engineering (and science) branches this is not the case." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://DhruvPatel01.github.io/posts/notaerocalc/notaerocalc_part1/" />
+
+
+
+
+<link rel="stylesheet" href="https://DhruvPatel01.github.io/assets/style.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="https://DhruvPatel01.github.io/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="https://DhruvPatel01.github.io/img/favicon/orange.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="NotAeroCalc Part 1: What is NotAeroCalc and how to use it?">
+<meta property="og:description" content="I am a Computer Engineer by education and by training. Luckily, we computer engineers do not have to deal with different units. All our units are power of 2. We have sensible names, Kilo, Mega, Giga, you get it. When we get unlucky, there could be a confusion of whether Kilo in the context is $ 2^{10} $ or $ 10^3 $. But that is it.
+But in other engineering (and science) branches this is not the case." />
+<meta property="og:url" content="https://DhruvPatel01.github.io/posts/notaerocalc/notaerocalc_part1/" />
+<meta property="og:site_name" content="Dhruv Patel" />
+
+  
+    <meta property="og:image" content="https://DhruvPatel01.github.io/img/favicon/orange.png">
+  
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2021-04-03 18:04:02 &#43;0530 IST" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="orange">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Dhruv Patel
+  </div>
+</a>
+
+    </div>
+    
+      <div class="menu-trigger">menu</div>
+    
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about/">About</a></li>
+        
+      
+        
+          <li><a href="https://github.com/DhruvPatel01/">Github</a></li>
+        
+      
+        
+          <li><a href="/talks/">Talks</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about/">About</a></li>
+      
+    
+      
+        <li><a href="https://github.com/DhruvPatel01/">Github</a></li>
+      
+    
+      
+        <li><a href="/talks/">Talks</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://DhruvPatel01.github.io/posts/notaerocalc/notaerocalc_part1/">NotAeroCalc Part 1: What is NotAeroCalc and how to use it?</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2021-04-03 
+      </span>
+    
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="https://DhruvPatel01.github.io/tags/science/">science</a>&nbsp;
+    
+    #<a href="https://DhruvPatel01.github.io/tags/aero/">aero</a>&nbsp;
+    
+    #<a href="https://DhruvPatel01.github.io/tags/physics/">physics</a>&nbsp;
+    
+    #<a href="https://DhruvPatel01.github.io/tags/python/">python</a>&nbsp;
+    
+    #<a href="https://DhruvPatel01.github.io/tags/ply/">ply</a>&nbsp;
+    
+    #<a href="https://DhruvPatel01.github.io/tags/yacc/">yacc</a>&nbsp;
+    
+    #<a href="https://DhruvPatel01.github.io/tags/lex/">lex</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <p>I am a Computer Engineer by education and by training. Luckily, we computer engineers do not have to deal with different units. All our units are power of 2. We have sensible names, Kilo, Mega, Giga, you get it. When we get unlucky, there could be a confusion of whether Kilo in the context is $ 2^{10} $ or $ 10^3 $. But that is it.</p>
+<p>But in other engineering (and science) branches this is not the case. A while ago I was taking a course &ldquo;Introduction Aeronautical Engineering&rdquo; on edX (the course is from TUDelft). Honestly, the homework problems there were annoying, at least for me. I can understand that students in the Aero department might need to practice the conversion process.</p>
+<p>There is a <code>Newton</code>, which is also $\frac{kg * m}{s^2}$. There is an imperial unit for length called <code>foot</code>, but you <strong>have to</strong> convert that into SI units to be compatible with other units in the formula, because the constants in the formula use <code>m</code>. Then there is <code>Celsius</code> to <code>Kelvin</code> mapping. You either have to memorize the conversion factors, or you have to make a long list of the conversion factors.</p>
+<p>Something had to be done. And I was also looking for something to do on the weekends. So I am working on  <a href="https://github.com/DhruvPatel01/NotAeroCalc/">NotAeroCalc</a>. I kept Aero in because my primary aim is to expedite solving homework problems in that course. But many parts of the app are general and should be usable outside Aerospace engineering.</p>
+<p>Rather than explaining what NotAeroCalc does, let me show you it in action.</p>
+<script id="asciicast-sYPyE91MGr9QOamVwnYThzlZN" src="https://asciinema.org/a/sYPyE91MGr9QOamVwnYThzlZN.js" async></script>
+<p>You might have noticed a few things. First there is a need for <code>*</code> between quantity and its unit. I designed it this way because it simplifies the grammar. Another thing is that units are not pluralized, e.g. it is <code>32000 foot</code> and not <code>32000 feet</code>. If you need your answer in SI units just use <code>expression in si</code>.</p>
+<p>In the backend I am using an amazing Python library called <a href="https://www.astropy.org/">Astropy</a> for conversion and <a href="https://github.com/dabeaz/ply">Ply</a> for parsing. You can use all the units available in Astropy, the list can be found <a href="https://docs.astropy.org/en/stable/units/">here</a>.</p>
+<p>You can also use math constants like <code>pi</code> and <code>e</code>. Internally NotAeroCalc looks for unresolved names in <code>math</code> library in Python. So if you haven&rsquo;t created a <code>pi</code> variable, <code>math.pi</code> will be used.</p>
+<h2 id="commands-in-notaerocalc">Commands in NotAeroCalc<a href="#commands-in-notaerocalc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<dl>
+<dt><code>del x</code></dt>
+<dd>deletes the variable named <code>x</code> if defined. If not defined ignores the command.</dd>
+<dt><code>variables</code></dt>
+<dd>lists all the variables defined in the current session.</dd>
+</dl>
+<h2 id="problem-solving-with-notaerocalc">Problem Solving with NotAeroCalc<a href="#problem-solving-with-notaerocalc" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Let&rsquo;s try to solve one problem using NotAeroCalc. Below is one of the homework problems from the course.</p>
+<pre><code>An aircraft flies at an altitude of 30,000 feet. 
+Determine the air temperature (in [K]), 
+air pressure (in [Pa]) and air density (in [kg/m3]) 
+at this altitude, according to the standard atmosphere.
+</code></pre><p>Following are the variables given.</p>
+<pre><code>g = 9.80665 * m/s/s
+T0 = 15*Celsius in Kelvin
+P0 = 1013.25 * hectopascal
+h = 30000 * foot in m
+a = -6.5 * Kelvin/km
+rho0 = 1.225 * kg/m^3
+</code></pre><p>Notice that some variables are given in <code>m</code> whereas others are in <code>km</code>. A good thing about using NotAeroCalc is that generally you do not need to worry about this discrepancy. However you can always use <code>expr in si</code> to have unified values.</p>
+<p>Since 30,000 foot is in troposphere, we can use $ T_1 = T_0 + a*h $ formula to compute the temperature at 32000 foot.</p>
+<p>Once we know the temperature, we can use the following formula to compute the air density.</p>
+<p>$$
+\frac{\rho_0}{\rho_1} = {\left( \frac{T_1}{T_0} \right)} ^{\frac{g}{R * a} - 1}
+$$</p>
+<p>There are few things about <code>^</code> operator in NotAeroCalc that you should keep in mind.</p>
+<ul>
+<li>In <code>a^b</code>, <code>b</code> has to be unit less. So expression like  <code>2^(3*m/(3*m))</code> is allowed, but <code>2^(3*m/3*m)</code> is not, as it simplifies to <code>2^(1*m^2)</code>.</li>
+<li>By default the units are not simplified, you might have to use <code>a^(b in si)</code> if units in b cancel out.</li>
+<li><code>2^((3*m)/(300*cm))</code> will give you an error. Use <code>2^((3*m)/(300*cm) in si)</code> for now. I might fix this later.</li>
+<li>If <code>a</code> has units, <code>b</code> has to be like an integer. <code>b = 3.0</code> is allowed, but <code>b = 3.14</code> is not. So <code>(3*m)^2.0</code> evaluates to <code>9*m^2</code>.</li>
+<li>Finally, if <code>a</code> does not have units, any power is allowed.</li>
+</ul>
+<p>In the above density formula, the exponent is actually unit less. So everything works out.</p>
+<p>See the following recording for the whole solution.</p>
+<script id="asciicast-oTGxU3t8WOPyI6orh3W0TBMfh" src="https://asciinema.org/a/oTGxU3t8WOPyI6orh3W0TBMfh.js" async></script>
+<h2 id="what-is-next">What is next?<a href="#what-is-next" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>As far as blogging goes, I plan to write the details of how NotAeroCalc was implemented, the nitty gritty details of Lex and Yacc, in the next part. It is not that difficult really.</p>
+<p>In the NotAeroCalc itself, I plan to add some features like having a database of formulas, and solving for a particular variables using other user defined variables.</p>
+<p>GitHub repository for this project can be found <a href="https://github.com/DhruvPatel01/NotAeroCalc/">here</a>.</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="https://DhruvPatel01.github.io/posts/flajolet-martin/">
+                <span class="button__text">How to find the number of unique elements in a stream?</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>Dhruv Patel</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://DhruvPatel01.github.io/assets/main.js"></script>
+<script src="https://DhruvPatel01.github.io/assets/prism.js"></script>
+
+
+
+
+<script>
+window.MathJax = {
+    tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+    },
+    svg: {
+        fontCache: 'global'
+    }
+};
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+  
+</div>
+
+</body>
+</html>

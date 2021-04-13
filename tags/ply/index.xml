@@ -9,31 +9,31 @@
     <copyright>Dhruv Patel</copyright>
     <lastBuildDate>Sat, 03 Apr 2021 18:04:02 +0530</lastBuildDate><atom:link href="https://DhruvPatel01.github.io/tags/ply/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>AeroCalc Part 1: What is AeroCalc and how to use it?</title>
-      <link>https://DhruvPatel01.github.io/posts/aerocalc/aerocalc_part1/</link>
+      <title>NotAeroCalc Part 1: What is NotAeroCalc and how to use it?</title>
+      <link>https://DhruvPatel01.github.io/posts/notaerocalc/notaerocalc_part1/</link>
       <pubDate>Sat, 03 Apr 2021 18:04:02 +0530</pubDate>
       
-      <guid>https://DhruvPatel01.github.io/posts/aerocalc/aerocalc_part1/</guid>
+      <guid>https://DhruvPatel01.github.io/posts/notaerocalc/notaerocalc_part1/</guid>
       <description>I am a Computer Engineer by education and by training. Luckily, we computer engineers do not have to deal with different units. All our units are power of 2. We have sensible names, Kilo, Mega, Giga, you get it. When we get unlucky, there could be a confusion of whether Kilo in the context is $ 2^{10} $ or $ 10^3 $. But that is it.
 But in other engineering (and science) branches this is not the case.</description>
       <content>&lt;p&gt;I am a Computer Engineer by education and by training. Luckily, we computer engineers do not have to deal with different units. All our units are power of 2. We have sensible names, Kilo, Mega, Giga, you get it. When we get unlucky, there could be a confusion of whether Kilo in the context is $ 2^{10} $ or $ 10^3 $. But that is it.&lt;/p&gt;
 &lt;p&gt;But in other engineering (and science) branches this is not the case. A while ago I was taking a course &amp;ldquo;Introduction Aeronautical Engineering&amp;rdquo; on edX (the course is from TUDelft). Honestly, the homework problems there were annoying, at least for me. I can understand that students in the Aero department might need to practice the conversion process.&lt;/p&gt;
 &lt;p&gt;There is a &lt;code&gt;Newton&lt;/code&gt;, which is also $\frac{kg * m}{s^2}$. There is an imperial unit for length called &lt;code&gt;foot&lt;/code&gt;, but you &lt;strong&gt;have to&lt;/strong&gt; convert that into SI units to be compatible with other units in the formula, because the constants in the formula use &lt;code&gt;m&lt;/code&gt;. Then there is &lt;code&gt;Celsius&lt;/code&gt; to &lt;code&gt;Kelvin&lt;/code&gt; mapping. You either have to memorize the conversion factors, or you have to make a long list of the conversion factors.&lt;/p&gt;
-&lt;p&gt;Something had to be done. And I was also looking for something to do on the weekends. So I am working on &lt;a href=&#34;https://github.com/DhruvPatel01/AeroCalc/&#34;&gt;AeroCalc&lt;/a&gt;. Don&amp;rsquo;t go on the name, I gave Aero prefix because my primary aim is to expedite solving homework problems in that course. But many parts of the app are general and should be usable outside Aerospace engineering.&lt;/p&gt;
-&lt;p&gt;Rather than explaining what AeroCalc does, let me show you it in action.&lt;/p&gt;
+&lt;p&gt;Something had to be done. And I was also looking for something to do on the weekends. So I am working on  &lt;a href=&#34;https://github.com/DhruvPatel01/NotAeroCalc/&#34;&gt;NotAeroCalc&lt;/a&gt;. I kept Aero in because my primary aim is to expedite solving homework problems in that course. But many parts of the app are general and should be usable outside Aerospace engineering.&lt;/p&gt;
+&lt;p&gt;Rather than explaining what NotAeroCalc does, let me show you it in action.&lt;/p&gt;
 &lt;script id=&#34;asciicast-sYPyE91MGr9QOamVwnYThzlZN&#34; src=&#34;https://asciinema.org/a/sYPyE91MGr9QOamVwnYThzlZN.js&#34; async&gt;&lt;/script&gt;
 &lt;p&gt;You might have noticed a few things. First there is a need for &lt;code&gt;*&lt;/code&gt; between quantity and its unit. I designed it this way because it simplifies the grammar. Another thing is that units are not pluralized, e.g. it is &lt;code&gt;32000 foot&lt;/code&gt; and not &lt;code&gt;32000 feet&lt;/code&gt;. If you need your answer in SI units just use &lt;code&gt;expression in si&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;In the backend I am using an amazing Python library called &lt;a href=&#34;https://www.astropy.org/&#34;&gt;Astropy&lt;/a&gt; for conversion and &lt;a href=&#34;https://github.com/dabeaz/ply&#34;&gt;Ply&lt;/a&gt; for parsing. You can use all the units available in Astropy, the list can be found &lt;a href=&#34;https://docs.astropy.org/en/stable/units/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;You can also use math constants like &lt;code&gt;pi&lt;/code&gt; and &lt;code&gt;e&lt;/code&gt;. Internally AeroCalc looks for unresolved names in &lt;code&gt;math&lt;/code&gt; library in Python. So if you haven&amp;rsquo;t created a &lt;code&gt;pi&lt;/code&gt; variable, &lt;code&gt;math.pi&lt;/code&gt; will be used.&lt;/p&gt;
-&lt;h2 id=&#34;commands-in-aerocalc&#34;&gt;Commands in AeroCalc&lt;/h2&gt;
+&lt;p&gt;You can also use math constants like &lt;code&gt;pi&lt;/code&gt; and &lt;code&gt;e&lt;/code&gt;. Internally NotAeroCalc looks for unresolved names in &lt;code&gt;math&lt;/code&gt; library in Python. So if you haven&amp;rsquo;t created a &lt;code&gt;pi&lt;/code&gt; variable, &lt;code&gt;math.pi&lt;/code&gt; will be used.&lt;/p&gt;
+&lt;h2 id=&#34;commands-in-notaerocalc&#34;&gt;Commands in NotAeroCalc&lt;/h2&gt;
 &lt;dl&gt;
 &lt;dt&gt;&lt;code&gt;del x&lt;/code&gt;&lt;/dt&gt;
 &lt;dd&gt;deletes the variable named &lt;code&gt;x&lt;/code&gt; if defined. If not defined ignores the command.&lt;/dd&gt;
 &lt;dt&gt;&lt;code&gt;variables&lt;/code&gt;&lt;/dt&gt;
 &lt;dd&gt;lists all the variables defined in the current session.&lt;/dd&gt;
 &lt;/dl&gt;
-&lt;h2 id=&#34;problem-solving-with-aerocalc&#34;&gt;Problem Solving with AeroCalc&lt;/h2&gt;
-&lt;p&gt;Let&amp;rsquo;s try to solve one problem using AeroCalc. Below is one of the homework problems from the course.&lt;/p&gt;
+&lt;h2 id=&#34;problem-solving-with-notaerocalc&#34;&gt;Problem Solving with NotAeroCalc&lt;/h2&gt;
+&lt;p&gt;Let&amp;rsquo;s try to solve one problem using NotAeroCalc. Below is one of the homework problems from the course.&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;An aircraft flies at an altitude of 30,000 feet. 
 Determine the air temperature (in [K]), 
 air pressure (in [Pa]) and air density (in [kg/m3]) 
@@ -45,13 +45,13 @@ P0 = 1013.25 * hectopascal
 h = 30000 * foot in m
 a = -6.5 * Kelvin/km
 rho0 = 1.225 * kg/m^3
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Notice that some variables are given in &lt;code&gt;m&lt;/code&gt; whereas others are in &lt;code&gt;km&lt;/code&gt;. A good thing about using AeroCalc is that generally you do not need to worry about this discrepancy. However you can always use &lt;code&gt;expr in si&lt;/code&gt; to have unified values.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Notice that some variables are given in &lt;code&gt;m&lt;/code&gt; whereas others are in &lt;code&gt;km&lt;/code&gt;. A good thing about using NotAeroCalc is that generally you do not need to worry about this discrepancy. However you can always use &lt;code&gt;expr in si&lt;/code&gt; to have unified values.&lt;/p&gt;
 &lt;p&gt;Since 30,000 foot is in troposphere, we can use $ T_1 = T_0 + a*h $ formula to compute the temperature at 32000 foot.&lt;/p&gt;
 &lt;p&gt;Once we know the temperature, we can use the following formula to compute the air density.&lt;/p&gt;
 &lt;p&gt;$$
 \frac{\rho_0}{\rho_1} = {\left( \frac{T_1}{T_0} \right)} ^{\frac{g}{R * a} - 1}
 $$&lt;/p&gt;
-&lt;p&gt;There are few things about &lt;code&gt;^&lt;/code&gt; operator in AeroCalc that you should keep in mind.&lt;/p&gt;
+&lt;p&gt;There are few things about &lt;code&gt;^&lt;/code&gt; operator in NotAeroCalc that you should keep in mind.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;In &lt;code&gt;a^b&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt; has to be unit less. So expression like  &lt;code&gt;2^(3*m/(3*m))&lt;/code&gt; is allowed, but &lt;code&gt;2^(3*m/3*m)&lt;/code&gt; is not, as it simplifies to &lt;code&gt;2^(1*m^2)&lt;/code&gt;.&lt;/li&gt;
 &lt;li&gt;By default the units are not simplified, you might have to use &lt;code&gt;a^(b in si)&lt;/code&gt; if units in b cancel out.&lt;/li&gt;
@@ -63,9 +63,9 @@ $$&lt;/p&gt;
 &lt;p&gt;See the following recording for the whole solution.&lt;/p&gt;
 &lt;script id=&#34;asciicast-oTGxU3t8WOPyI6orh3W0TBMfh&#34; src=&#34;https://asciinema.org/a/oTGxU3t8WOPyI6orh3W0TBMfh.js&#34; async&gt;&lt;/script&gt;
 &lt;h2 id=&#34;what-is-next&#34;&gt;What is next?&lt;/h2&gt;
-&lt;p&gt;As far as blogging goes, I plan to write the details of how AeroCalc was implemented, the nitty gritty details of Lex and Yacc, in the next part. It is not that difficult really.&lt;/p&gt;
-&lt;p&gt;In the AeroCalc itself, I plan to add some features like having a database of formulas, and solving for a particular variables using other user defined variables.&lt;/p&gt;
-&lt;p&gt;GitHub repository for this project can be found &lt;a href=&#34;https://github.com/DhruvPatel01/AeroCalc/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;As far as blogging goes, I plan to write the details of how NotAeroCalc was implemented, the nitty gritty details of Lex and Yacc, in the next part. It is not that difficult really.&lt;/p&gt;
+&lt;p&gt;In the NotAeroCalc itself, I plan to add some features like having a database of formulas, and solving for a particular variables using other user defined variables.&lt;/p&gt;
+&lt;p&gt;GitHub repository for this project can be found &lt;a href=&#34;https://github.com/DhruvPatel01/NotAeroCalc/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 </content>
     </item>
     
