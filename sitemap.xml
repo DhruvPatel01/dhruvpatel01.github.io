@@ -2,10 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://DhruvPatel01.github.io/tags/aero/</loc>
-    <lastmod>2021-04-03T18:04:02+05:30</lastmod>
-  </url><url>
     <loc>https://DhruvPatel01.github.io/</loc>
+    <lastmod>2021-04-14T21:51:48+05:30</lastmod>
+  </url><url>
+    <loc>https://DhruvPatel01.github.io/posts/</loc>
+    <lastmod>2021-04-14T21:51:48+05:30</lastmod>
+  </url><url>
+    <loc>https://DhruvPatel01.github.io/tags/python/</loc>
+    <lastmod>2021-04-14T21:51:48+05:30</lastmod>
+  </url><url>
+    <loc>https://DhruvPatel01.github.io/posts/python_circular_imports/</loc>
+    <lastmod>2021-04-14T21:51:48+05:30</lastmod>
+  </url><url>
+    <loc>https://DhruvPatel01.github.io/tags/python-gotcha/</loc>
+    <lastmod>2021-04-14T21:51:48+05:30</lastmod>
+  </url><url>
+    <loc>https://DhruvPatel01.github.io/tags/</loc>
+    <lastmod>2021-04-14T21:51:48+05:30</lastmod>
+  </url><url>
+    <loc>https://DhruvPatel01.github.io/tags/aero/</loc>
     <lastmod>2021-04-03T18:04:02+05:30</lastmod>
   </url><url>
     <loc>https://DhruvPatel01.github.io/tags/lex/</loc>
@@ -20,16 +35,7 @@
     <loc>https://DhruvPatel01.github.io/tags/ply/</loc>
     <lastmod>2021-04-03T18:04:02+05:30</lastmod>
   </url><url>
-    <loc>https://DhruvPatel01.github.io/posts/</loc>
-    <lastmod>2021-04-03T18:04:02+05:30</lastmod>
-  </url><url>
-    <loc>https://DhruvPatel01.github.io/tags/python/</loc>
-    <lastmod>2021-04-03T18:04:02+05:30</lastmod>
-  </url><url>
     <loc>https://DhruvPatel01.github.io/tags/science/</loc>
-    <lastmod>2021-04-03T18:04:02+05:30</lastmod>
-  </url><url>
-    <loc>https://DhruvPatel01.github.io/tags/</loc>
     <lastmod>2021-04-03T18:04:02+05:30</lastmod>
   </url><url>
     <loc>https://DhruvPatel01.github.io/tags/yacc/</loc>

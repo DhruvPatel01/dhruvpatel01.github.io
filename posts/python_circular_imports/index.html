@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <title>Python got me with circular imports! :: Dhruv Patel</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Yet another way circular import can get you. This blog describes how Python import works, why circular imports cause issue and how to fix it." />
+<meta name="keywords" content="python circular imports" />
+<meta name="robots" content="noodp" />
+<link rel="canonical" href="https://DhruvPatel01.github.io/posts/python_circular_imports/" />
+
+
+
+
+<link rel="stylesheet" href="https://DhruvPatel01.github.io/assets/style.css">
+
+
+
+
+
+
+<link rel="apple-touch-icon" href="https://DhruvPatel01.github.io/img/apple-touch-icon-192x192.png">
+
+  <link rel="shortcut icon" href="https://DhruvPatel01.github.io/img/favicon/orange.png">
+
+
+
+<meta name="twitter:card" content="summary" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Python got me with circular imports!">
+<meta property="og:description" content="Yet another way circular import can get you. This blog describes how Python import works, why circular imports cause issue and how to fix it." />
+<meta property="og:url" content="https://DhruvPatel01.github.io/posts/python_circular_imports/" />
+<meta property="og:site_name" content="Dhruv Patel" />
+
+  <meta property="og:image" content="https://DhruvPatel01.github.io">
+
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+
+
+  <meta property="article:published_time" content="2021-04-14 21:51:48 &#43;0530 IST" />
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body class="orange">
+
+
+<div class="container center headings--one-size">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Dhruv Patel
+  </div>
+</a>
+
+    </div>
+    
+      <div class="menu-trigger">menu</div>
+    
+  </div>
+  
+    <nav class="menu">
+  <ul class="menu__inner menu__inner--desktop">
+    
+      
+        
+          <li><a href="/about/">About</a></li>
+        
+      
+        
+          <li><a href="https://github.com/DhruvPatel01/">Github</a></li>
+        
+      
+        
+          <li><a href="/talks/">Talks</a></li>
+        
+      
+      
+    
+
+    
+  </ul>
+
+  <ul class="menu__inner menu__inner--mobile">
+    
+      
+        <li><a href="/about/">About</a></li>
+      
+    
+      
+        <li><a href="https://github.com/DhruvPatel01/">Github</a></li>
+      
+    
+      
+        <li><a href="/talks/">Talks</a></li>
+      
+    
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<div class="post">
+  <h1 class="post-title">
+    <a href="https://DhruvPatel01.github.io/posts/python_circular_imports/">Python got me with circular imports!</a></h1>
+  <div class="post-meta">
+    
+      <span class="post-date">
+        2021-04-14 
+      </span>
+    
+    
+    <span class="post-author">:: Dhruv Patel</span>
+    
+  </div>
+
+  
+  <span class="post-tags">
+    
+    #<a href="https://DhruvPatel01.github.io/tags/python-gotcha/">python-gotcha</a>&nbsp;
+    
+    #<a href="https://DhruvPatel01.github.io/tags/python/">python</a>&nbsp;
+    
+  </span>
+  
+
+  
+
+  
+
+  <div class="post-content"><div>
+        <p>I have been programming in Python from last seven years. Apart from the new features Python adds in every new release, I didn&rsquo;t think Python would surprise me, until it did.</p>
+<p>I will demonstrate what happened with the trimmed down code. I have two files, <code>main.py</code> and <code>notmain.py</code>. <code>main.py</code> has a global variable called <code>var</code>. <code>notmain</code> has some code that would process user input and add entry into <code>main.var</code>. Pretty simple, right?</p>
+
+
+
+  <div class="collapsable-code">
+    <input id="248963157" type="checkbox"  />
+    <label for="248963157">
+      <span class="collapsable-code__language">python</span>
+      <span class="collapsable-code__title">main.py</span>
+      <span class="collapsable-code__toggle" data-label-expand="Hide" data-label-collapse="Hide"></span>
+    </label>
+    <pre class="language-python" ><code>
+import notmain
+
+var = {}
+
+def work():
+    print(&#34;Before:&#34;, var)
+    notmain.populate()
+    print(&#34;After: &#34;, var)
+
+if __name__ == &#39;__main__&#39;:
+    work()
+
+</code></pre>
+  </div>
+
+
+
+
+
+  <div class="collapsable-code">
+    <input id="562817934" type="checkbox"  />
+    <label for="562817934">
+      <span class="collapsable-code__language">python</span>
+      <span class="collapsable-code__title">notmain.py</span>
+      <span class="collapsable-code__toggle" data-label-expand="Hide" data-label-collapse="Hide"></span>
+    </label>
+    <pre class="language-python" ><code>
+import main
+
+def populate():
+    main.var[&#39;answer&#39;] = 42
+</code></pre>
+  </div>
+
+
+<p>What do you think will happen when I run <code>python main.py</code>? Don&rsquo;t know about you, but I imagined that after I call <code>notmain.populate</code>, <code>main.var</code> will have one key, value in it.</p>
+<pre><code>Shell&gt; python main.py
+Before: {}
+After:  {}
+</code></pre><p>But boy I was wrong. To explain what just happened, let me try to explain how Python imports work.</p>
+<h2 id="how-does-python-import-work-a-simple-version">How does Python import work? (A simple version)<a href="#how-does-python-import-work-a-simple-version" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>In what follows, I only explain what happens when you use <code>import x</code>. <code>from x import y</code> is not explained here.</p>
+<p>When you import a module, two steps happen.</p>
+<ol>
+<li>Search (done by finder)</li>
+<li>Load (done by loader)</li>
+</ol>
+<p>In the search step, <code>sys.modules</code> is the first place checked. If the module is not in <code>sys.modules</code>, Python will search for that module in other ways, current directory being one of them. Once the module(which was not in <code>sys.modules</code>) is found, it will be added to <code>sys.modules</code> before step 2 is executed. Thus if <code>a</code> imports <code>b</code>, and <code>b</code> imports <code>c</code>, and <code>c</code> imports <code>b</code>, <code>b</code> will not be executed again.</p>
+<p>If the module was not found in <code>sys.modules</code>, the loading step will execute the module and the exported variables will be made available in the importee module.</p>
+<p>One thing you should note is that everything in Python is an object. Even the imported module is. Try this,</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> math<span style="color:#f92672">,</span> types
+<span style="color:#66d9ef">assert</span> isinstance(math, types<span style="color:#f92672">.</span>ModuleType)
+</code></pre></div><p>Objects are stored somewhere in memory. Try this,</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">print</span>(hex(id(math)))
+<span style="color:#75715e"># printed &#39;0x7f7e21029c20&#39; on my machine</span>
+</code></pre></div><p>So everything in the object module will be available as attributes.</p>
+<p>Now that we know how import works, let&rsquo;s try to see what happened with my code.</p>
+<h2 id="what-happened-with-my-code">What happened with my code?<a href="#what-happened-with-my-code" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>Let&rsquo;s augment the files to print location of <code>var</code> object. That shall give some ideas.</p>
+
+
+
+  <div class="collapsable-code">
+    <input id="691723548" type="checkbox"  />
+    <label for="691723548">
+      <span class="collapsable-code__language">python</span>
+      <span class="collapsable-code__title">main.py</span>
+      <span class="collapsable-code__toggle" data-label-expand="Hide" data-label-collapse="Hide"></span>
+    </label>
+    <pre class="language-python" ><code>
+import notmain
+
+var = {}
+print(&#34;In Main: &#34;, hex(id(var)))
+
+def work():
+    print(&#34;Before:&#34;, var, &#39;at&#39;, hex(id(var)))
+    notmain.populate()
+    print(&#34;After: &#34;, var, &#39;at&#39;, hex(id(var)))
+
+
+if __name__ == &#39;__main__&#39;:
+    work()
+</code></pre>
+  </div>
+
+
+
+
+
+  <div class="collapsable-code">
+    <input id="496372185" type="checkbox"  />
+    <label for="496372185">
+      <span class="collapsable-code__language">python</span>
+      <span class="collapsable-code__title">notmain.py</span>
+      <span class="collapsable-code__toggle" data-label-expand="Hide" data-label-collapse="Hide"></span>
+    </label>
+    <pre class="language-python" ><code>
+import main
+
+def populate():
+    main.var[&#39;answer&#39;] = 42
+    print(&#39;In not main: &#39;, main.var, &#39;at&#39;, hex(id(main.var)))
+
+</code></pre>
+  </div>
+
+
+<pre><code>Shell&gt; python main.py
+In Main:  0x7f64e4778cc0
+In Main:  0x7f64e490c6c0
+Before: {} at 0x7f64e490c6c0
+In not main:  {'answer': 42} at 0x7f64e4778cc0
+After:  {} at 0x7f64e490c6c0
+</code></pre><p>First of all notice that <code>In Main: ...</code> line is printed two times. In the previous section I did tell that <strong>if the module is found in <code>sys.modules</code></strong>, the module will not be executed again. The problem is that <code>main.py</code> is only imported once, but executed twice.</p>
+<p>Here is what happens.</p>
+<ul>
+<li><code>python main.py</code> starts executing.</li>
+<li>The first line is <code>import notmain</code>. Since <code>notmain</code> is not in <code>sys.modules</code> yet, it will be executed next. Notice that <code>main</code> was never imported. So <code>sys.modules</code> does not have an entry for <code>main</code>.</li>
+<li>Control goes to <code>notmain.py</code>. First line of it is <code>import main</code>, and as <code>main</code> is not in the cache, finder adds it into <code>sys.modules</code> and then loader starts executing <code>main.py</code> (again!).</li>
+<li>Control goes to <code>main.py</code>. Since the first line is <code>import notmain</code> and <code>notmain</code> <strong>is in</strong> the <code>sys.modules</code> now, there is no effect.</li>
+<li>Next line in <code>main.py</code> creates a variable <code>var@0x7f64e4778cc0</code>.</li>
+<li>Next few lines defines a function <code>work</code>.</li>
+<li>The <code>__name__ == '__main__'</code> condition is false, as at the moment <code>__name__ == 'main'</code></li>
+<li>Control goes back to <code>notmain.py</code>. Attributes from the <code>main</code> module will now be accessible.</li>
+<li><code>populate</code> is defined in <code>notmain</code>.</li>
+<li>Control comes back to <code>main</code>.</li>
+<li>Variable <code>var</code> is created (again!) and stored at <code>0x7f64e490c6c0</code>. Notice that there are two <code>var</code> variables. <code>notmain</code> has no idea that there is another <code>var</code> at <code>0x7f64e490c6c0</code>, it still thinks that <code>main.var</code> is at <code>0x7f64e4778cc0</code>.</li>
+<li><code>work</code> function is defined.</li>
+<li><code>__name__ == '__main__'</code> condition evaluates to true this time. So <code>work</code> is called, which calls <code>notmain.populate</code>.</li>
+<li><code>notmain.populate</code> adds <code>answer</code> key into <code>main.var</code> and not <code>__main__.var</code>.</li>
+</ul>
+<p>The issue is self-evident now. We need to distinguish between <code>main</code> and <code>__main__</code>. A simple solution is to create another file that imports <code>main</code> and then calls <code>main.work</code>. This way when <code>notmain</code> calls import, <code>sys.modules</code> will already have an entry for <code>main</code> and <code>main</code> will not be executed again, and both <code>main</code> and <code>notmain</code> have same view of <code>var</code>. So let&rsquo;s try this.</p>
+
+
+
+  <div class="collapsable-code">
+    <input id="576849132" type="checkbox"  />
+    <label for="576849132">
+      <span class="collapsable-code__language">python</span>
+      <span class="collapsable-code__title">really_main.py</span>
+      <span class="collapsable-code__toggle" data-label-expand="△" data-label-collapse="▽"></span>
+    </label>
+    <pre class="language-python" ><code>
+import main
+
+main.work()
+
+# no change in other files
+</code></pre>
+  </div>
+
+
+<pre><code>Shell&gt; python really_main.py
+Before:  {}
+After:   {'answer': 42}
+</code></pre><p>Whooo! That worked.</p>
+<h2 id="comments">Comments?<a href="#comments" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h2>
+<p>You have any doubts? Any feedbacks? Please reach out to me at <code>hello at domain</code> with subject line <code>Comment: Post title</code>. I&rsquo;ll get back to you as soon as possible.</p>
+
+      </div></div>
+
+  
+  
+<div class="pagination">
+    <div class="pagination__title">
+        <span class="pagination__title-h">Read other posts</span>
+        <hr />
+    </div>
+    <div class="pagination__buttons">
+        
+        
+        <span class="button next">
+            <a href="https://DhruvPatel01.github.io/posts/notaerocalc/notaerocalc_part1/">
+                <span class="button__text">NotAeroCalc Part 1: What is NotAeroCalc and how to use it?</span>
+                <span class="button__icon">→</span>
+            </a>
+        </span>
+        
+    </div>
+</div>
+
+  
+
+  
+
+</div>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright copyright--user">
+        <span>Dhruv Patel</span>
+    
+        <span>:: Theme made by <a href="https://twitter.com/panr">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+<script src="https://DhruvPatel01.github.io/assets/main.js"></script>
+<script src="https://DhruvPatel01.github.io/assets/prism.js"></script>
+
+
+
+
+<script>
+window.MathJax = {
+    tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+    },
+    svg: {
+        fontCache: 'global'
+    }
+};
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+  
+</div>
+
+</body>
+</html>

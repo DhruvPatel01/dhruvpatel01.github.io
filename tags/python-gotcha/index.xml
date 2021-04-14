@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>python-gotcha on Dhruv Patel</title>
+    <link>https://DhruvPatel01.github.io/tags/python-gotcha/</link>
+    <description>Recent content in python-gotcha on Dhruv Patel</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Dhruv Patel</copyright>
+    <lastBuildDate>Wed, 14 Apr 2021 21:51:48 +0530</lastBuildDate><atom:link href="https://DhruvPatel01.github.io/tags/python-gotcha/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Python got me with circular imports!</title>
+      <link>https://DhruvPatel01.github.io/posts/python_circular_imports/</link>
+      <pubDate>Wed, 14 Apr 2021 21:51:48 +0530</pubDate>
+      
+      <guid>https://DhruvPatel01.github.io/posts/python_circular_imports/</guid>
+      <description>I have been programming in Python from last seven years. Apart from the new features Python adds in every new release, I didn&amp;rsquo;t think Python would surprise me, until it did.
+I will demonstrate what happened with the trimmed down code. I have two files, main.py and notmain.py. main.py has a global variable called var. notmain has some code that would process user input and add entry into main.var. Pretty simple, right?</description>
+      <content>&lt;p&gt;I have been programming in Python from last seven years. Apart from the new features Python adds in every new release, I didn&amp;rsquo;t think Python would surprise me, until it did.&lt;/p&gt;
+&lt;p&gt;I will demonstrate what happened with the trimmed down code. I have two files, &lt;code&gt;main.py&lt;/code&gt; and &lt;code&gt;notmain.py&lt;/code&gt;. &lt;code&gt;main.py&lt;/code&gt; has a global variable called &lt;code&gt;var&lt;/code&gt;. &lt;code&gt;notmain&lt;/code&gt; has some code that would process user input and add entry into &lt;code&gt;main.var&lt;/code&gt;. Pretty simple, right?&lt;/p&gt;
+
+
+
+  &lt;div class=&#34;collapsable-code&#34;&gt;
+    &lt;input id=&#34;248963157&#34; type=&#34;checkbox&#34;  /&gt;
+    &lt;label for=&#34;248963157&#34;&gt;
+      &lt;span class=&#34;collapsable-code__language&#34;&gt;python&lt;/span&gt;
+      &lt;span class=&#34;collapsable-code__title&#34;&gt;main.py&lt;/span&gt;
+      &lt;span class=&#34;collapsable-code__toggle&#34; data-label-expand=&#34;Hide&#34; data-label-collapse=&#34;Hide&#34;&gt;&lt;/span&gt;
+    &lt;/label&gt;
+    &lt;pre class=&#34;language-python&#34; &gt;&lt;code&gt;
+import notmain
+
+var = {}
+
+def work():
+    print(&amp;#34;Before:&amp;#34;, var)
+    notmain.populate()
+    print(&amp;#34;After: &amp;#34;, var)
+
+if __name__ == &amp;#39;__main__&amp;#39;:
+    work()
+
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+
+
+
+
+
+  &lt;div class=&#34;collapsable-code&#34;&gt;
+    &lt;input id=&#34;562817934&#34; type=&#34;checkbox&#34;  /&gt;
+    &lt;label for=&#34;562817934&#34;&gt;
+      &lt;span class=&#34;collapsable-code__language&#34;&gt;python&lt;/span&gt;
+      &lt;span class=&#34;collapsable-code__title&#34;&gt;notmain.py&lt;/span&gt;
+      &lt;span class=&#34;collapsable-code__toggle&#34; data-label-expand=&#34;Hide&#34; data-label-collapse=&#34;Hide&#34;&gt;&lt;/span&gt;
+    &lt;/label&gt;
+    &lt;pre class=&#34;language-python&#34; &gt;&lt;code&gt;
+import main
+
+def populate():
+    main.var[&amp;#39;answer&amp;#39;] = 42
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+
+
+&lt;p&gt;What do you think will happen when I run &lt;code&gt;python main.py&lt;/code&gt;? Don&amp;rsquo;t know about you, but I imagined that after I call &lt;code&gt;notmain.populate&lt;/code&gt;, &lt;code&gt;main.var&lt;/code&gt; will have one key, value in it.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Shell&amp;gt; python main.py
+Before: {}
+After:  {}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;But boy I was wrong. To explain what just happened, let me try to explain how Python imports work.&lt;/p&gt;
+&lt;h2 id=&#34;how-does-python-import-work-a-simple-version&#34;&gt;How does Python import work? (A simple version)&lt;/h2&gt;
+&lt;p&gt;In what follows, I only explain what happens when you use &lt;code&gt;import x&lt;/code&gt;. &lt;code&gt;from x import y&lt;/code&gt; is not explained here.&lt;/p&gt;
+&lt;p&gt;When you import a module, two steps happen.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Search (done by finder)&lt;/li&gt;
+&lt;li&gt;Load (done by loader)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;In the search step, &lt;code&gt;sys.modules&lt;/code&gt; is the first place checked. If the module is not in &lt;code&gt;sys.modules&lt;/code&gt;, Python will search for that module in other ways, current directory being one of them. Once the module(which was not in &lt;code&gt;sys.modules&lt;/code&gt;) is found, it will be added to &lt;code&gt;sys.modules&lt;/code&gt; before step 2 is executed. Thus if &lt;code&gt;a&lt;/code&gt; imports &lt;code&gt;b&lt;/code&gt;, and &lt;code&gt;b&lt;/code&gt; imports &lt;code&gt;c&lt;/code&gt;, and &lt;code&gt;c&lt;/code&gt; imports &lt;code&gt;b&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt; will not be executed again.&lt;/p&gt;
+&lt;p&gt;If the module was not found in &lt;code&gt;sys.modules&lt;/code&gt;, the loading step will execute the module and the exported variables will be made available in the importee module.&lt;/p&gt;
+&lt;p&gt;One thing you should note is that everything in Python is an object. Even the imported module is. Try this,&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; math&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; types
+&lt;span style=&#34;color:#66d9ef&#34;&gt;assert&lt;/span&gt; isinstance(math, types&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;ModuleType)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Objects are stored somewhere in memory. Try this,&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;print&lt;/span&gt;(hex(id(math)))
+&lt;span style=&#34;color:#75715e&#34;&gt;# printed &amp;#39;0x7f7e21029c20&amp;#39; on my machine&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;So everything in the object module will be available as attributes.&lt;/p&gt;
+&lt;p&gt;Now that we know how import works, let&amp;rsquo;s try to see what happened with my code.&lt;/p&gt;
+&lt;h2 id=&#34;what-happened-with-my-code&#34;&gt;What happened with my code?&lt;/h2&gt;
+&lt;p&gt;Let&amp;rsquo;s augment the files to print location of &lt;code&gt;var&lt;/code&gt; object. That shall give some ideas.&lt;/p&gt;
+
+
+
+  &lt;div class=&#34;collapsable-code&#34;&gt;
+    &lt;input id=&#34;691723548&#34; type=&#34;checkbox&#34;  /&gt;
+    &lt;label for=&#34;691723548&#34;&gt;
+      &lt;span class=&#34;collapsable-code__language&#34;&gt;python&lt;/span&gt;
+      &lt;span class=&#34;collapsable-code__title&#34;&gt;main.py&lt;/span&gt;
+      &lt;span class=&#34;collapsable-code__toggle&#34; data-label-expand=&#34;Hide&#34; data-label-collapse=&#34;Hide&#34;&gt;&lt;/span&gt;
+    &lt;/label&gt;
+    &lt;pre class=&#34;language-python&#34; &gt;&lt;code&gt;
+import notmain
+
+var = {}
+print(&amp;#34;In Main: &amp;#34;, hex(id(var)))
+
+def work():
+    print(&amp;#34;Before:&amp;#34;, var, &amp;#39;at&amp;#39;, hex(id(var)))
+    notmain.populate()
+    print(&amp;#34;After: &amp;#34;, var, &amp;#39;at&amp;#39;, hex(id(var)))
+
+
+if __name__ == &amp;#39;__main__&amp;#39;:
+    work()
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+
+
+
+
+
+  &lt;div class=&#34;collapsable-code&#34;&gt;
+    &lt;input id=&#34;496372185&#34; type=&#34;checkbox&#34;  /&gt;
+    &lt;label for=&#34;496372185&#34;&gt;
+      &lt;span class=&#34;collapsable-code__language&#34;&gt;python&lt;/span&gt;
+      &lt;span class=&#34;collapsable-code__title&#34;&gt;notmain.py&lt;/span&gt;
+      &lt;span class=&#34;collapsable-code__toggle&#34; data-label-expand=&#34;Hide&#34; data-label-collapse=&#34;Hide&#34;&gt;&lt;/span&gt;
+    &lt;/label&gt;
+    &lt;pre class=&#34;language-python&#34; &gt;&lt;code&gt;
+import main
+
+def populate():
+    main.var[&amp;#39;answer&amp;#39;] = 42
+    print(&amp;#39;In not main: &amp;#39;, main.var, &amp;#39;at&amp;#39;, hex(id(main.var)))
+
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+
+
+&lt;pre&gt;&lt;code&gt;Shell&amp;gt; python main.py
+In Main:  0x7f64e4778cc0
+In Main:  0x7f64e490c6c0
+Before: {} at 0x7f64e490c6c0
+In not main:  {&#39;answer&#39;: 42} at 0x7f64e4778cc0
+After:  {} at 0x7f64e490c6c0
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;First of all notice that &lt;code&gt;In Main: ...&lt;/code&gt; line is printed two times. In the previous section I did tell that &lt;strong&gt;if the module is found in &lt;code&gt;sys.modules&lt;/code&gt;&lt;/strong&gt;, the module will not be executed again. The problem is that &lt;code&gt;main.py&lt;/code&gt; is only imported once, but executed twice.&lt;/p&gt;
+&lt;p&gt;Here is what happens.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;python main.py&lt;/code&gt; starts executing.&lt;/li&gt;
+&lt;li&gt;The first line is &lt;code&gt;import notmain&lt;/code&gt;. Since &lt;code&gt;notmain&lt;/code&gt; is not in &lt;code&gt;sys.modules&lt;/code&gt; yet, it will be executed next. Notice that &lt;code&gt;main&lt;/code&gt; was never imported. So &lt;code&gt;sys.modules&lt;/code&gt; does not have an entry for &lt;code&gt;main&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Control goes to &lt;code&gt;notmain.py&lt;/code&gt;. First line of it is &lt;code&gt;import main&lt;/code&gt;, and as &lt;code&gt;main&lt;/code&gt; is not in the cache, finder adds it into &lt;code&gt;sys.modules&lt;/code&gt; and then loader starts executing &lt;code&gt;main.py&lt;/code&gt; (again!).&lt;/li&gt;
+&lt;li&gt;Control goes to &lt;code&gt;main.py&lt;/code&gt;. Since the first line is &lt;code&gt;import notmain&lt;/code&gt; and &lt;code&gt;notmain&lt;/code&gt; &lt;strong&gt;is in&lt;/strong&gt; the &lt;code&gt;sys.modules&lt;/code&gt; now, there is no effect.&lt;/li&gt;
+&lt;li&gt;Next line in &lt;code&gt;main.py&lt;/code&gt; creates a variable &lt;code&gt;var@0x7f64e4778cc0&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Next few lines defines a function &lt;code&gt;work&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;The &lt;code&gt;__name__ == &#39;__main__&#39;&lt;/code&gt; condition is false, as at the moment &lt;code&gt;__name__ == &#39;main&#39;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Control goes back to &lt;code&gt;notmain.py&lt;/code&gt;. Attributes from the &lt;code&gt;main&lt;/code&gt; module will now be accessible.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;populate&lt;/code&gt; is defined in &lt;code&gt;notmain&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Control comes back to &lt;code&gt;main&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Variable &lt;code&gt;var&lt;/code&gt; is created (again!) and stored at &lt;code&gt;0x7f64e490c6c0&lt;/code&gt;. Notice that there are two &lt;code&gt;var&lt;/code&gt; variables. &lt;code&gt;notmain&lt;/code&gt; has no idea that there is another &lt;code&gt;var&lt;/code&gt; at &lt;code&gt;0x7f64e490c6c0&lt;/code&gt;, it still thinks that &lt;code&gt;main.var&lt;/code&gt; is at &lt;code&gt;0x7f64e4778cc0&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;work&lt;/code&gt; function is defined.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;__name__ == &#39;__main__&#39;&lt;/code&gt; condition evaluates to true this time. So &lt;code&gt;work&lt;/code&gt; is called, which calls &lt;code&gt;notmain.populate&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;notmain.populate&lt;/code&gt; adds &lt;code&gt;answer&lt;/code&gt; key into &lt;code&gt;main.var&lt;/code&gt; and not &lt;code&gt;__main__.var&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The issue is self-evident now. We need to distinguish between &lt;code&gt;main&lt;/code&gt; and &lt;code&gt;__main__&lt;/code&gt;. A simple solution is to create another file that imports &lt;code&gt;main&lt;/code&gt; and then calls &lt;code&gt;main.work&lt;/code&gt;. This way when &lt;code&gt;notmain&lt;/code&gt; calls import, &lt;code&gt;sys.modules&lt;/code&gt; will already have an entry for &lt;code&gt;main&lt;/code&gt; and &lt;code&gt;main&lt;/code&gt; will not be executed again, and both &lt;code&gt;main&lt;/code&gt; and &lt;code&gt;notmain&lt;/code&gt; have same view of &lt;code&gt;var&lt;/code&gt;. So let&amp;rsquo;s try this.&lt;/p&gt;
+
+
+
+  &lt;div class=&#34;collapsable-code&#34;&gt;
+    &lt;input id=&#34;576849132&#34; type=&#34;checkbox&#34;  /&gt;
+    &lt;label for=&#34;576849132&#34;&gt;
+      &lt;span class=&#34;collapsable-code__language&#34;&gt;python&lt;/span&gt;
+      &lt;span class=&#34;collapsable-code__title&#34;&gt;really_main.py&lt;/span&gt;
+      &lt;span class=&#34;collapsable-code__toggle&#34; data-label-expand=&#34;△&#34; data-label-collapse=&#34;▽&#34;&gt;&lt;/span&gt;
+    &lt;/label&gt;
+    &lt;pre class=&#34;language-python&#34; &gt;&lt;code&gt;
+import main
+
+main.work()
+
+# no change in other files
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+
+
+&lt;pre&gt;&lt;code&gt;Shell&amp;gt; python really_main.py
+Before:  {}
+After:   {&#39;answer&#39;: 42}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Whooo! That worked.&lt;/p&gt;
+&lt;h2 id=&#34;comments&#34;&gt;Comments?&lt;/h2&gt;
+&lt;p&gt;You have any doubts? Any feedbacks? Please reach out to me at &lt;code&gt;hello at domain&lt;/code&gt; with subject line &lt;code&gt;Comment: Post title&lt;/code&gt;. I&amp;rsquo;ll get back to you as soon as possible.&lt;/p&gt;
+</content>
+    </item>
+    
+  </channel>
+</rss>
